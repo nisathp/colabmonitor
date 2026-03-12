@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub to Colab Frontend</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
+        <h1 class="text-2xl font-bold text-blue-600 mb-6 text-center">Colab API Dashboard</h1>
+        
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="apiUrl">
+                Colab API URL (Cloudflare Link)
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="apiUrl" type="text" placeholder="https://xxxx.trycloudflare.com">
+        </div>
+
+        <button onclick="fetchColabData()" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+            Colab-ல் இருந்து தரவை எடு
+        </button>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="hidden mt-4 text-center text-gray-600">
+            <svg class="animate-spin h-5 w-5 mr-3 inline-block" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            தரவு பெறப்படுகிறது...
+        </div>
+
+        <!-- Result Display -->
+        <div id="resultBox" class="hidden mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <p id="apiMessage" class="text-green-600 font-semibold mb-3"></p>
+            <div class="grid grid-cols-2 gap-4 text-center">
+                <div class="bg-blue-100 p-2 rounded">
+                    <span class="block text-xs text-gray-500 uppercase">CPU Usage</span>
+                    <span id="cpuVal" class="font-bold text-blue-800 text-lg">0%</span>
+                </div>
+                <div class="bg-purple-100 p-2 rounded">
+                    <span class="block text-xs text-gray-500 uppercase">RAM Usage</span>
+                    <span id="ramVal" class="font-bold text-purple-800 text-lg">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="errorBox" class="hidden mt-4 text-red-500 text-sm text-center"></div>
+    </div>
+
+    <script>
+        async function fetchColabData() {
+            const baseUrl = document.getElementById('apiUrl').value.trim();
+            const resultBox = document.getElementById('resultBox');
+            const errorBox = document.getElementById('errorBox');
+            const loading = document.getElementById('loading');
+
+            // Reset UI
+            resultBox.classList.add('hidden');
+            errorBox.classList.add('hidden');
+            
+            if(!baseUrl) {
+                errorBox.innerText = "தயவுசெய்து Colab URL-ஐ உள்ளிடவும்!";
+                errorBox.classList.remove('hidden');
+                return;
+            }
+
+            loading.classList.remove('hidden');
+
+            try {
+                // Remove trailing slash if user added it, and append the endpoint
+                const endpoint = baseUrl.replace(/\/$/, "") + "/api/server-info";
+                
+                const response = await fetch(endpoint, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                document.getElementById('apiMessage').innerText = data.message;
+                document.getElementById('cpuVal').innerText = data.cpu;
+                document.getElementById('ramVal').innerText = data.ram;
+                
+                resultBox.classList.remove('hidden');
+            } catch (error) {
+                console.error("Fetch error: ", error);
+                errorBox.innerText = "பிழை: Colab சர்வரைத் தொடர்புகொள்ள முடியவில்லை. URL சரியானதா அல்லது Colab இயங்குகிறதா என சரிபார்க்கவும்.";
+                errorBox.classList.remove('hidden');
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
