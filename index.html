@@ -32,7 +32,7 @@
             
             <div id="connectionStatus" class="flex items-center gap-3 bg-white px-5 py-3 rounded-2xl shadow-sm border border-slate-100 self-start">
                 <div id="statusDot" class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
-                <span id="statusText" class="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">Disconnected</span>
+                <span id="statusText" class="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">இணைப்பு இல்லை</span>
             </div>
         </header>
 
@@ -42,22 +42,22 @@
                 <div class="bg-white p-6 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100">
                     <h2 class="text-sm font-bold text-slate-800 mb-5 flex items-center gap-2">
                         <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                        Connection Hub
+                        இணைப்பு மையம்
                     </h2>
                     
                     <div class="space-y-4">
                         <div class="relative">
-                            <input id="apiUrl" type="text" placeholder="https://..." 
+                            <input id="apiUrl" type="text" placeholder="https://...trycloudflare.com" 
                                 class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl py-4 px-5 text-sm text-slate-700 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none font-medium placeholder:text-slate-300">
                         </div>
                         
                         <button onclick="toggleMonitor()" id="actionBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm">
-                            <span>Connect Server</span>
+                            <span>சர்வருடன் இணை</span>
                         </button>
                     </div>
                     
                     <div class="mt-6 pt-6 border-t border-slate-50">
-                        <p class="text-[10px] leading-relaxed text-slate-400 font-medium">Colab-il kidaikkum Cloudflare tunnel URL-ai mael ulla petti-il paste seiyungal.</p>
+                        <p class="text-[10px] leading-relaxed text-slate-400 font-medium">Colab-ல் கிடைக்கும் Cloudflare tunnel URL-ஐ மேலுள்ள பகுதியில் ஒட்டவும். (எ.கா: https://xxxx.trycloudflare.com)</p>
                     </div>
                 </div>
             </div>
@@ -72,9 +72,9 @@
                             <div class="p-2 bg-blue-50 rounded-xl">
                                 <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
                             </div>
-                            <span class="text-[10px] font-extrabold text-blue-500 bg-blue-50 px-2.5 py-1 rounded-full uppercase">Real-time</span>
+                            <span class="text-[10px] font-extrabold text-blue-500 bg-blue-50 px-2.5 py-1 rounded-full uppercase">நிகழ்நேரம்</span>
                         </div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">CPU Power</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">CPU பயன்பாடு</p>
                         <h3 id="cpuVal" class="text-4xl font-extrabold text-slate-800 mb-4">0%</h3>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                             <div id="cpuBar" class="bg-blue-500 h-full transition-all duration-700 ease-out" style="width: 0%"></div>
@@ -87,9 +87,9 @@
                             <div class="p-2 bg-purple-50 rounded-xl">
                                 <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                             </div>
-                            <span class="text-[10px] font-extrabold text-purple-500 bg-purple-50 px-2.5 py-1 rounded-full uppercase">Allocated</span>
+                            <span class="text-[10px] font-extrabold text-purple-500 bg-purple-50 px-2.5 py-1 rounded-full uppercase">பயன்பாட்டில்</span>
                         </div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Memory (RAM)</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">நினைவகம் (RAM)</p>
                         <h3 id="ramVal" class="text-4xl font-extrabold text-slate-800 mb-4">0%</h3>
                         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                             <div id="ramBar" class="bg-purple-500 h-full transition-all duration-700 ease-out" style="width: 0%"></div>
@@ -103,9 +103,9 @@
                                 <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
                             </div>
                         </div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Disk Space</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">வட்டு இடம்</p>
                         <h3 id="storageVal" class="text-4xl font-extrabold text-slate-800">0%</h3>
-                        <p id="freeDisk" class="text-[10px] text-slate-400 mt-2 font-bold bg-slate-50 inline-block px-2 py-1 rounded-lg">Available: --</p>
+                        <p id="freeDisk" class="text-[10px] text-slate-400 mt-2 font-bold bg-slate-50 inline-block px-2 py-1 rounded-lg">காலியிடம்: --</p>
                     </div>
 
                     <!-- Uptime Stats -->
@@ -115,11 +115,11 @@
                                 <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                         </div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Session Duration</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">இயங்கிய நேரம்</p>
                         <h3 id="uptimeVal" class="text-4xl font-extrabold text-slate-800">00:00:00</h3>
                         <p class="text-[10px] text-emerald-500 mt-2 font-black uppercase flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
-                            Live Now
+                            நிகழ்நேரம்
                         </p>
                     </div>
 
@@ -130,24 +130,24 @@
                                 <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a2 2 0 00-1.96 1.414l-.727 2.903a2 2 0 01-3.564 0l-.727-2.903a2 2 0 00-1.96-1.414l-2.387.477a2 2 0 00-1.022.547l-2.14 2.14a2 2 0 01-3.412-1.411V6.21a2 2 0 011-1.732l6-3.464a2 2 0 012 0l6 3.464a2 2 0 011 1.732v9.104a2 2 0 01-3.412 1.411l-2.14-2.14z"></path></svg>
                             </div>
                             <div>
-                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Runtime Architecture</p>
-                                <h3 id="runtimeType" class="text-lg font-bold">Scanning Environment...</h3>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">செயல்படும் சூழல்</p>
+                                <h3 id="runtimeType" class="text-lg font-bold">கண்டறிகிறது...</h3>
                             </div>
                         </div>
                         <div class="flex gap-3">
                             <div class="bg-white/5 px-4 py-3 rounded-2xl border border-white/10 text-center min-w-[100px]">
-                                <span class="text-[9px] text-slate-500 block font-bold uppercase mb-1">Port</span>
+                                <span class="text-[9px] text-slate-500 block font-bold uppercase mb-1">போர்ட்</span>
                                 <span class="font-mono text-blue-400 font-bold">8000</span>
                             </div>
                             <div class="bg-white/5 px-4 py-3 rounded-2xl border border-white/10 text-center min-w-[100px]">
-                                <span class="text-[9px] text-slate-500 block font-bold uppercase mb-1">Protocol</span>
+                                <span class="text-[9px] text-slate-500 block font-bold uppercase mb-1">நெறிமுறை</span>
                                 <span class="font-mono text-blue-400 font-bold">HTTPS</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="errorDisplay" class="hidden mt-8 p-6 bg-red-50 border-2 border-red-100 rounded-3xl text-red-600 text-sm font-bold text-center animate-pulse"></div>
+                <div id="errorDisplay" class="hidden mt-8 p-6 bg-red-50 border-2 border-red-100 rounded-3xl text-red-600 text-sm font-bold text-center"></div>
             </div>
         </div>
     </div>
@@ -165,13 +165,22 @@
                 const response = await fetch(`${cleanUrl}/api/server-info`, {
                     method: 'GET',
                     mode: 'cors',
-                    cache: 'no-cache'
+                    cache: 'no-cache',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
                 });
                 
-                if (!response.ok) throw new Error("Server Error");
+                if (!response.ok) {
+                    if (response.status === 530) {
+                        throw new Error("Cloudflare Tunnel பிழை (530): சர்வரை அடைய முடியவில்லை. Colab-ல் Flask சர்வர் இயங்குகிறதா என உறுதிப்படுத்தவும்.");
+                    }
+                    throw new Error(`சர்வர் பிழை: ${response.status}`);
+                }
+                
                 const data = await response.json();
 
-                // Smoothly update values
+                // Update values
                 updateValue('cpuVal', data.cpu);
                 document.getElementById('cpuBar').style.width = data.cpu;
                 
@@ -179,13 +188,13 @@
                 document.getElementById('ramBar').style.width = data.ram;
                 
                 updateValue('storageVal', data.storage_used);
-                document.getElementById('freeDisk').innerText = `Available: ${data.free_disk}`;
+                document.getElementById('freeDisk').innerText = `காலியிடம்: ${data.free_disk}`;
                 document.getElementById('uptimeVal').innerText = data.uptime;
                 document.getElementById('runtimeType').innerText = data.runtime_type;
 
-                // UI Connection Success
+                // Update UI to online
                 document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.5)]";
-                document.getElementById('statusText').innerText = "Online";
+                document.getElementById('statusText').innerText = "இணைக்கப்பட்டுள்ளது";
                 document.getElementById('statusText').className = "text-[10px] font-bold uppercase tracking-[0.15em] text-emerald-600";
                 
                 const grid = document.getElementById('statsGrid');
@@ -195,7 +204,7 @@
             } catch (err) {
                 console.error("Fetch Error:", err);
                 if (isMonitoring) {
-                   document.getElementById('errorDisplay').innerText = "Inaippu Thundikkappattathu! URL sariyaaga ullaathaa ena parunga.";
+                   document.getElementById('errorDisplay').innerText = err.message || "இணைப்பு துண்டிக்கப்பட்டது! URL சரியாக உள்ளதா என சரிபார்க்கவும்.";
                    document.getElementById('errorDisplay').classList.remove('hidden');
                 }
                 setOfflineUI();
@@ -211,7 +220,7 @@
 
         function setOfflineUI() {
             document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.4)]";
-            document.getElementById('statusText').innerText = "Offline";
+            document.getElementById('statusText').innerText = "இணைப்பு இல்லை";
             document.getElementById('statusText').className = "text-[10px] font-bold uppercase tracking-[0.15em] text-red-600";
             document.getElementById('statsGrid').classList.add('opacity-30', 'grayscale', 'pointer-events-none');
         }
@@ -221,25 +230,24 @@
             if(isMonitoring) {
                 isMonitoring = false;
                 clearInterval(monitorInterval);
-                btn.innerHTML = '<span>Connect Server</span>';
+                btn.innerHTML = '<span>சர்வருடன் இணை</span>';
                 btn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm";
                 document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-slate-300 shadow-none";
-                document.getElementById('statusText').innerText = "Disconnected";
+                document.getElementById('statusText').innerText = "இணைப்பு இல்லை";
                 document.getElementById('statusText').className = "text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400";
                 document.getElementById('statsGrid').classList.add('opacity-30', 'grayscale', 'pointer-events-none');
                 document.getElementById('errorDisplay').classList.add('hidden');
             } else {
                 const url = document.getElementById('apiUrl').value.trim();
-                if(!url) return alert("URL-ai ullaidavum!");
+                if(!url) return alert("URL-ஐ உள்ளிடவும்!");
                 isMonitoring = true;
-                btn.innerHTML = '<span>Disconnecting...</span>';
+                btn.innerHTML = '<span>இணைக்கிறது...</span>';
                 btn.className = "w-full bg-slate-800 hover:bg-black text-white font-bold py-4 rounded-2xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm";
                 fetchColabData();
                 monitorInterval = setInterval(fetchColabData, 4000);
                 
-                // Change text back to disconnect after a delay
                 setTimeout(() => {
-                    if (isMonitoring) btn.innerHTML = '<span>Disconnect Server</span>';
+                    if (isMonitoring) btn.innerHTML = '<span>இணைப்பைத் துண்டி</span>';
                 }, 1000);
             }
         }
