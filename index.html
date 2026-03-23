@@ -3,104 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub to Colab Frontend</title>
-    <!-- Tailwind CSS for styling -->
+    <title>Colab Ultimate Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-slate-50 min-h-screen text-slate-900">
 
-    <div class="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
-        <h1 class="text-2xl font-bold text-blue-600 mb-6 text-center">Colab API Dashboard</h1>
-        
-        <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="apiUrl">
-                Colab API URL (Cloudflare Link)
-            </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="apiUrl" type="text" placeholder="https://xxxx.trycloudflare.com">
-        </div>
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <!-- Header Section -->
+        <header class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            <div>
+                <h1 class="text-4xl font-extrabold tracking-tight text-slate-900">Colab <span class="text-blue-600">Mini Server</span></h1>
+                <p class="text-slate-500 font-medium">Nija nera session kankaanippu matrum melannmai</p>
+            </div>
+            <div id="connectionStatus" class="flex items-center gap-3 bg-white px-4 py-2 rounded-2xl shadow-sm border border-slate-200">
+                <div id="statusDot" class="w-3 h-3 rounded-full bg-slate-300"></div>
+                <span id="statusText" class="text-sm font-bold uppercase tracking-widest text-slate-400">Disconnected</span>
+            </div>
+        </header>
 
-        <button onclick="fetchColabData()" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-            Colab-ல் இருந்து தரவை எடு
-        </button>
-
-        <!-- Loading Indicator -->
-        <div id="loading" class="hidden mt-4 text-center text-gray-600">
-            <svg class="animate-spin h-5 w-5 mr-3 inline-block" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            தரவு பெறப்படுகிறது...
-        </div>
-
-        <!-- Result Display -->
-        <div id="resultBox" class="hidden mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <p id="apiMessage" class="text-green-600 font-semibold mb-3"></p>
-            <div class="grid grid-cols-2 gap-4 text-center">
-                <div class="bg-blue-100 p-2 rounded">
-                    <span class="block text-xs text-gray-500 uppercase">CPU Usage</span>
-                    <span id="cpuVal" class="font-bold text-blue-800 text-lg">0%</span>
-                </div>
-                <div class="bg-purple-100 p-2 rounded">
-                    <span class="block text-xs text-gray-500 uppercase">RAM Usage</span>
-                    <span id="ramVal" class="font-bold text-purple-800 text-lg">0%</span>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Sidebar: Connection Control -->
+            <div class="lg:col-span-1 space-y-6">
+                <div class="glass p-6 rounded-3xl shadow-xl border border-white">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                        Server Inaipu
+                    </h2>
+                    <input id="apiUrl" type="text" placeholder="https://xxxx.trycloudflare.com" 
+                        class="w-full bg-slate-100 border-0 rounded-2xl py-4 px-5 text-slate-700 focus:ring-2 focus:ring-blue-500 transition-all mb-4 outline-none">
+                    <button onclick="toggleMonitor()" id="actionBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 transition-all active:scale-95">
+                        Kankaanippai Thodangu
+                    </button>
+                    <p class="text-[10px] text-slate-400 mt-4 text-center">Colab vazhangiya Cloudflare URL-ai ingae ullaidavum.</p>
                 </div>
             </div>
-        </div>
 
-        <div id="errorBox" class="hidden mt-4 text-red-500 text-sm text-center"></div>
+            <!-- Main Panel: Stats Display -->
+            <div class="lg:col-span-2">
+                <div id="statsGrid" class="grid grid-cols-2 gap-4 opacity-50 pointer-events-none transition-opacity duration-500">
+                    
+                    <!-- CPU Box -->
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-1">CPU Usage</p>
+                        <h3 id="cpuVal" class="text-3xl font-black text-slate-800">0%</h3>
+                        <div class="w-full bg-slate-100 h-1.5 mt-3 rounded-full overflow-hidden">
+                            <div id="cpuBar" class="bg-blue-500 h-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- RAM Box -->
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-1">RAM Usage</p>
+                        <h3 id="ramVal" class="text-3xl font-black text-slate-800">0%</h3>
+                        <div class="w-full bg-slate-100 h-1.5 mt-3 rounded-full overflow-hidden">
+                            <div id="ramBar" class="bg-purple-500 h-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Storage Box -->
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-1">Disk Storage</p>
+                        <h3 id="storageVal" class="text-3xl font-black text-slate-800">0%</h3>
+                        <p id="freeDisk" class="text-[10px] text-slate-400 mt-1 font-bold">Available: --</p>
+                    </div>
+
+                    <!-- Session Time Box -->
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-1">Session Uptime</p>
+                        <h3 id="uptimeVal" class="text-3xl font-black text-slate-800">00:00:00</h3>
+                        <p class="text-[10px] text-green-500 mt-1 font-bold pulse">LIVE SESSION</p>
+                    </div>
+
+                    <!-- Runtime Type Box -->
+                    <div class="col-span-2 bg-slate-900 p-6 rounded-3xl shadow-xl text-white">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Runtime Architecture</p>
+                                <h3 id="runtimeType" class="text-xl font-bold">Detecting...</h3>
+                            </div>
+                            <div class="bg-slate-800 px-4 py-2 rounded-xl border border-slate-700">
+                                <span class="text-[10px] text-slate-400 block font-bold uppercase">Backend Port</span>
+                                <span class="font-mono text-blue-400">8000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="errorDisplay" class="hidden mt-4 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-sm font-bold text-center"></div>
+            </div>
+        </div>
     </div>
 
     <script>
+        let monitorInterval = null;
+        let isMonitoring = false;
+
         async function fetchColabData() {
             const baseUrl = document.getElementById('apiUrl').value.trim();
-            const resultBox = document.getElementById('resultBox');
-            const errorBox = document.getElementById('errorBox');
-            const loading = document.getElementById('loading');
-
-            // Reset UI
-            resultBox.classList.add('hidden');
-            errorBox.classList.add('hidden');
-            
-            if(!baseUrl) {
-                errorBox.innerText = "தயவுசெய்து Colab URL-ஐ உள்ளிடவும்!";
-                errorBox.classList.remove('hidden');
-                return;
-            }
-
-            loading.classList.remove('hidden');
+            if(!baseUrl) return;
 
             try {
-                // Remove trailing slash if user added it, and append the endpoint
-                const endpoint = baseUrl.replace(/\/$/, "") + "/api/server-info";
-                
-                const response = await fetch(endpoint, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
+                // Fetching data from Colab Backend
+                const response = await fetch(baseUrl.replace(/\/$/, "") + "/api/server-info");
+                if (!response.ok) throw new Error();
                 const data = await response.json();
-                
-                document.getElementById('apiMessage').innerText = data.message;
-                document.getElementById('cpuVal').innerText = data.cpu;
-                document.getElementById('ramVal').innerText = data.ram;
-                
-                resultBox.classList.remove('hidden');
-            } catch (error) {
-                console.error("Fetch error: ", error);
-                errorBox.innerText = "பிழை: Colab சர்வரைத் தொடர்புகொள்ள முடியவில்லை. URL சரியானதா அல்லது Colab இயங்குகிறதா என சரிபார்க்கவும்.";
-                errorBox.classList.remove('hidden');
-            } finally {
-                loading.classList.add('hidden');
+
+                // UI Updates based on API response
+                document.getElementById('cpuVal').innerText = data.cpu || "0%";
+                document.getElementById('cpuBar').style.width = data.cpu || "0%";
+                document.getElementById('ramVal').innerText = data.ram || "0%";
+                document.getElementById('ramBar').style.width = data.ram || "0%";
+                document.getElementById('storageVal').innerText = data.storage_used || "0%";
+                document.getElementById('freeDisk').innerText = `Available: ${data.free_disk || '--'}`;
+                document.getElementById('uptimeVal').innerText = data.uptime || "00:00:00";
+                document.getElementById('runtimeType').innerText = data.runtime_type || "Unknown";
+
+                // Success Status Indicator
+                document.getElementById('statusDot').className = "w-3 h-3 rounded-full bg-green-500 shadow-lg shadow-green-200";
+                document.getElementById('statusText').innerText = "Online";
+                document.getElementById('statusText').className = "text-sm font-bold uppercase tracking-widest text-green-600";
+                document.getElementById('statsGrid').style.opacity = "1";
+                document.getElementById('statsGrid').style.pointerEvents = "auto";
+                document.getElementById('errorDisplay').classList.add('hidden');
+
+            } catch (err) {
+                // Handle errors and stop monitoring if server is unreachable
+                stopMonitor();
+                document.getElementById('errorDisplay').innerText = "Pizhai: Server badhilalikkavillai! URL-ai sariparkkavum.";
+                document.getElementById('errorDisplay').classList.remove('hidden');
+                document.getElementById('statusDot').className = "w-3 h-3 rounded-full bg-red-500";
+                document.getElementById('statusText').innerText = "Error";
             }
+        }
+
+        function toggleMonitor() {
+            if(isMonitoring) {
+                stopMonitor();
+            } else {
+                const url = document.getElementById('apiUrl').value.trim();
+                if(!url) return;
+                isMonitoring = true;
+                document.getElementById('actionBtn').innerText = "Kankaanippai Niruthu";
+                document.getElementById('actionBtn').className = "w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-2xl transition-all";
+                fetchColabData();
+                monitorInterval = setInterval(fetchColabData, 5000);
+            }
+        }
+
+        function stopMonitor() {
+            isMonitoring = false;
+            clearInterval(monitorInterval);
+            document.getElementById('actionBtn').innerText = "Kankaanippai Thodangu";
+            document.getElementById('actionBtn').className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl transition-all";
+            document.getElementById('statusDot').className = "w-3 h-3 rounded-full bg-slate-300";
+            document.getElementById('statusText').innerText = "Disconnected";
+            document.getElementById('statsGrid').style.opacity = "0.5";
+            document.getElementById('statsGrid').style.pointerEvents = "none";
         }
     </script>
 </body>
